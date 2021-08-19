@@ -7,6 +7,11 @@
         justify-content: space-between;
     }
 }
+@include tablet {
+    .logo {
+        width: 20rem;
+    }
+}
 
 .navegacion {
     @include tablet {
