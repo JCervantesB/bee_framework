@@ -29,5 +29,8 @@
                 </div> 
             </div>
             
+            <!-- Añadir el slogan solo cuando la variable inicio es true -->
+            <?php echo $inicio ? "<h1>Venta de Casas y Departamentos Exclusivos de Lujo</h1>" : ''; ?>
         </div> <!--.barra-->
+
     </header>
