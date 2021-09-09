@@ -114,7 +114,7 @@ incluirTemplate('header');
 ?>
 
 <main class="contenedor seccion">
-    <h1>Crear</h1>
+    <h1>Crear Propiedad</h1>
 
     <a href="/admin" class="boton boton-verde">Volver</a>
 
