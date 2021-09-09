@@ -5,8 +5,14 @@
     font-weight: $bold;
     text-transform: uppercase;
     margin: 1rem 0;
+    background-color: $verde;
+
+    &.exito {
+        background-color: $verde;
+    }
 
     &.error {
         background-color: $rojo;
     }
+
 }
