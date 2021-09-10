@@ -1,4 +1,10 @@
 <?php
+    require '../../includes/funciones.php';
+    $auth = estaAutenticado();
+
+    if(!$auth) {
+        header('Location: /');
+    }
 
     //Validad por id Valido
     $id = $_GET['id'];
@@ -120,8 +126,6 @@
             }
         }
     }
-
-    require '../../includes/funciones.php';
 
     incluirTemplate('header');
 ?>
