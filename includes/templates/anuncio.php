@@ -9,7 +9,6 @@
         header('Location: /');
     }
     // Importar la conexion a DB
-    require 'includes/config/database.php';
     $db = conectarDB();
     // Consultar la DB
     $query = "SELECT * FROM propiedades WHERE id = ${id}";    

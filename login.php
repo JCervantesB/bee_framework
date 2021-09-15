@@ -1,5 +1,5 @@
 <?php 
-    require 'includes/config/database.php';
+    require 'includes/app.php';
     $db = conectarDB();
 
     // Validacion con errores
@@ -56,7 +56,7 @@
     }
 
     // Incluye el header
-    require 'includes/funciones.php';
+
     
     incluirTemplate('header');
 ?>
