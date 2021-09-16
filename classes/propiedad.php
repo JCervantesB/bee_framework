@@ -37,10 +37,18 @@ class Propiedad {
         $this->wc = $args['wc'] ?? '';
         $this->estacionamiento = $args['estacionamiento'] ?? '';
         $this->creado = date('Y/m/d');
-        $this->vendedorId = $args['vendedorId'] ?? '';
+        $this->vendedorId = $args['vendedorId'] ?? 1;
     }
 
     public function guardar() {
+        if(isset($this->id)) {
+            //Actualizar
+        } else {
+            //Creando un nuevo registro
+        }
+    }
+
+    public function crear() {
 
         //Sanitizar los datos
         $atributos = $this->sanitizarAtributos();
@@ -77,6 +85,15 @@ class Propiedad {
 
     //Subida de archivos
     public function setImagen($imagen) {
+        // Elimina la imagen previa
+
+        if(isset($this->id)) {
+            //Comprobar si existe el archivo
+            $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+            if($existeArchivo) {
+                unlink(CARPETA_IMAGENES . $this->imagen);
+            }
+        }
         //Asignar al atributo de imagen, el nombre de la imagen
         if($imagen) {
             $this->imagen = $imagen;
@@ -118,13 +135,22 @@ class Propiedad {
         return self::$errores;
     }
 
-    //Lista todas las propiedades
+    //Lista todos los registros
     public static function all() {
         $query = "SELECT * FROM propiedades";
         
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
+
+    //Busca un registro por su id
+    public static function find($id) {
+        $query = "SELECT * FROM propiedades WHERE id = ${id}";
+        
+        $resultado = self::consultarSQL($query);
+        return array_shift($resultado);
+    } 
+
 
     public static function consultarSQL($query) {
         //Consultar DB
@@ -150,4 +176,14 @@ class Propiedad {
         }
         return $objeto;
     }
+
+    //Sincroniza el objeto en memoria con los cambios realizados por el usuario
+    public function sincronizar( $args = [] ) {
+        foreach($args as $key => $value) {
+            if(property_exists($this, $key) && !is_null($value)) {
+                $this->$key = $value;
+            }
+        }
+    }
+
 }
