@@ -19,14 +19,14 @@
 
         //Crea una nueva instancia
         $propiedad = new Propiedad($_POST['propiedad']);
-        
+       
         /**Subida de archivos */
         // Generar un nombre unico
         $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";  
         
         // Settear imagen
         // Realiza un resize a la imagen con intervention
-        if($_FILES['imagen']['tmp_name']) {
+        if($_FILES['propiedad']['tmp_name']['imagen']) {
             $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
             $propiedad->setImagen($nombreImagen);
         }
@@ -35,8 +35,7 @@
         $errores = $propiedad->validar();
         
         // Revisar que el arreglo de errores este vacio
-        if(empty($errores)) {
-            
+        if(empty($errores)) {            
             
             //Crear la carpeta para subir imagenes
             if(!is_dir(CARPETA_IMAGENES)) {
@@ -47,14 +46,7 @@
             $image->save(CARPETA_IMAGENES . $nombreImagen);
             
             //Guarda en la base de datos
-            $resultado = $propiedad->guardar();   
-
-            //Mensaje de exito o error
-            if($resultado) {
-                // Redireccionar al usuario si el registro es exitoso
-                // Le pasamos informacion a la pagina de admin mediante querystring para mostrar que fue lo que se hizo
-                header('Location: /admin?resultado=1');
-            }
+            $propiedad->guardar();   
         }
 
     }

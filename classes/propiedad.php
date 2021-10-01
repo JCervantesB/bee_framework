@@ -5,7 +5,10 @@ namespace App;
 class Propiedad {
     //Base de datos
     protected static $db;
-    protected static $columnasDB = ['id', 'titulo', 'precio', 'imagen', 'descripcion', 'habitaciones', 'wc', 'estacionamiento', 'creado', 'vendedorId'];
+    protected static $columnasDB = 
+    ['id', 'titulo', 'precio', 'imagen', 
+    'descripcion', 'habitaciones', 'wc', 
+    'estacionamiento', 'creado', 'vendedorId'];
 
     //Errores
     protected static $errores = [];
@@ -28,7 +31,7 @@ class Propiedad {
 
     public function __construct($args = [])
     {
-        $this->id = $args['id'] ?? '';
+        $this->id = $args['id'] ?? null;
         $this->titulo = $args['titulo'] ?? '';
         $this->precio = $args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
@@ -40,11 +43,13 @@ class Propiedad {
         $this->vendedorId = $args['vendedorId'] ?? 1;
     }
 
-    public function guardar() {
-        if(isset($this->id)) {
+    public function guardar(){
+        if (!is_null($this->id)) {
             //Actualizar
-        } else {
+            $this->actualizar();
+        } else{
             //Creando un nuevo registro
+            $this->crear();
         }
     }
 
@@ -61,9 +66,49 @@ class Propiedad {
         $query .= " ') ";
         
         $resultado = self::$db->query($query);
-       return $resultado;
+        
+        //Mensaje de exito o error
+        if($resultado) {
+            // Redireccionar al usuario si el registro es exitoso
+            // Le pasamos informacion a la pagina de admin mediante querystring para mostrar que fue lo que se hizo
+            header('Location: /admin?resultado=1');
+        }
     }
 
+    public function actualizar() {
+        //Sanitizar los datos
+        $atributos = $this->sanitizarAtributos();
+        $valores = [];
+        foreach($atributos as $key => $value) {
+            $valores[] = "{$key}='{$value}'";
+        }
+        // debuguear(join(', ', $valores)); //Convierte el arreglo en un string
+        $query = " UPDATE propiedades SET "; 
+        $query .= join(', ', $valores);
+        $query .= " WHERE id = '" . self::$db->escape_string( $this->id) . "' ";
+        $query .= " LIMIT 1";
+            
+        $resultado = self::$db->query($query);
+        
+        if ($resultado) {
+            // Redireccionar al usuario si el registro es exitoso
+            // Le pasamos informacion a la pagina de admin mediante querystring para mostrar que fue lo que se hizo
+            header('Location: /admin?resultado=2');
+        }
+    }
+
+    //Eliminar un registro
+    public function eliminar() {
+        $query = "DELETE FROM propiedades WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
+        $resultado = self::$db->query($query);
+
+        if($resultado) {
+            $this->borrarImagen();
+            header('Location: /admin?resultado=3');
+        }
+    }
+
+    //Identificar y unir los atributos de la BD
     public function atributos() {
         $atributos = [];
         foreach(self::$columnasDB as $columna) {
@@ -87,16 +132,21 @@ class Propiedad {
     public function setImagen($imagen) {
         // Elimina la imagen previa
 
-        if(isset($this->id)) {
-            //Comprobar si existe el archivo
-            $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
-            if($existeArchivo) {
-                unlink(CARPETA_IMAGENES . $this->imagen);
-            }
+        if(!is_null($this->id)) {
+            $this->borrarImagen();
         }
         //Asignar al atributo de imagen, el nombre de la imagen
         if($imagen) {
             $this->imagen = $imagen;
+        }
+    }
+
+    // Elimina el archivo
+    public function borrarImagen() {
+        //Comprobar si existe el archivo
+        $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+        if($existeArchivo) {
+            unlink(CARPETA_IMAGENES . $this->imagen);
         }
     }
 
@@ -105,14 +155,14 @@ class Propiedad {
         return self::$errores;
     }
 
-    public function validar(){
+    public function validar() {
         if(!$this->titulo) {
             self::$errores[] = "Debes añadir un titulo";
         }
         if(!$this->precio) {
             self::$errores[] = "El precio es obligatorio";
         }
-        if(strlen($this->descripcion) < 50) {
+        if( !strlen( $this->descripcion ) < 50 ) {
             self::$errores[] = "La descripción es obligatoria y debe tener almenos 50 caracteres";
         }
         if(!$this->habitaciones) {
@@ -185,5 +235,4 @@ class Propiedad {
             }
         }
     }
-
 }
