@@ -1,68 +1,77 @@
-.derecha {
+.derecha{
     display: flex;
     flex-direction: column;
     align-items: center;
+    grid-column: 2 / 3;
 
-    @include tablet {
+    @include tablet{
+        align-items: center;
         align-items: flex-end;
     }
-    .dark-mode-boton {
+
+    .dark-mode-boton{
         width: 3rem;
         margin-top: 3rem;
         margin-bottom: 2rem;
         filter: invert(100%);
 
-        &:hover {
+        &:hover{
             cursor: pointer;
         }
 
-        @include tablet {
+        @include tablet{
             margin-top: 0;
+            
         }
     }
 }
-.barra {
+
+.barra{
+    @include grid(2, 0);
+    padding-top: 3rem;
+    justify-items: center;
+    align-items: center;
+}
+
+/*.barra{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     padding-top: 3rem;
-    @include tablet {
+    @include tablet{
         flex-direction: row;
-        align-items: flex-end;
         justify-content: space-between;
     }
-}
+    
+}*/
 
-.logo {
-    width: 20rem;
-}
-
-.navegacion {
-
+.navegacion{
+    /*display: none;*/
     visibility: hidden;
     opacity: 0;
     height: 0;
-    transition: visibility .3s ease-in-out, opacity .3s linear, height .3s linear;
+    transform: translateY(-20%);
+    transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-    @include tablet {
+    @include tablet{
         display: flex;
         align-items: center;
         opacity: 1;
         visibility: visible;
     }
-    
-    a {
+
+    a{
         color: $blanco;
         text-decoration: none;
         font-size: 2.2rem;
         display: block;
         text-align: center;
 
-        @include tablet {
+        @include tablet{
             margin-right: 2rem;
             font-size: 1.8rem;
-            
-            &:last-of-type {
+
+            &:last-of-type{
                 margin-right: 0;
             }
         }
@@ -70,17 +79,25 @@
 }
 
 /** Menu de hamburguesa **/
-.mobile-menu {
-    @include tablet {
+.mobile-menu{
+    @include tablet{
         display: none;
     }
-    img {
+
+    img{
         width: 5rem;
     }
-}       
+}
 
-.mostrar {
+.mostrar{
     visibility: visible;
     opacity: 1;
+    transform: translateY(0);
     height: auto;
+    /*display: flex;
+    flex-direction: column;
+
+    @include tablet{
+        flex-direction: row;
+    }*/
 }

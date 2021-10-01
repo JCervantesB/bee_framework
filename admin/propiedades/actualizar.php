@@ -18,7 +18,7 @@ require '../../includes/app.php';
     $propiedad = Propiedad::find($id);
 
     //Consulta para obtener todos los vendedores
-    //$vendedores = Vendedor::all();
+    $vendedores = Vendedor::all();
 
     //Arreglo con mensaje de errores 
     $errores = Propiedad::getErrores();

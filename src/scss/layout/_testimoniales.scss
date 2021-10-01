@@ -1,15 +1,15 @@
-.testimonial {
+.testimonial{
     background-color: $verde;
+    color: $blanco;
     font-size: 2.4rem;
     padding: 2rem;
-    color: $blanco;
     border-radius: 2rem;
 
-    blockquote {
+    blockquote{
         padding-left: 5rem;
-        position: relative;        
+        position: relative;
 
-        &::before {            
+        &::before{
             content: '';
             background-image: url(../img/comilla.svg);
             background-repeat: no-repeat;
@@ -20,7 +20,8 @@
             left: -2rem;
         }
     }
-    p {
+
+    p{
         text-align: right;
         color: $blanco;
     }
