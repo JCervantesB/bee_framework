@@ -10,7 +10,7 @@
     if (!$id)
         header('Location: /admin');
 
-    //Obtener los datos de la propiedad
+    //Obtener los datos del vendedor
     $vendedor = Vendedor::find($id);
 
     //Arreglo con mensaje de errores 
@@ -19,8 +19,11 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         //Asignar los atributos
         $args = $_POST['vendedor'];
+
+        // Sincronizar objeto en memoria con lo que el usuario escribió
         $vendedor->sincronizar($args);
 
+        // Validación
         $errores = $vendedor->validar();
 
         if (empty($errores)) {
