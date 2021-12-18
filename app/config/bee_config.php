@@ -1,5 +1,5 @@
-<!-- Este archivo contiene las Configuraciones Core de Cada Proyecto que utilice Bee Framework -->
 <?php
+// Este archivo contiene las Configuraciones Core de Cada Proyecto que utilice Bee Framework
 
 // Saber si estamos trabajando de forma local o remota
 define('IS_LOCAL'       , in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']));
@@ -17,7 +17,7 @@ define('BASEPATH'       , IS_LOCAL ? '/' : '__URL_EN_PRODUCCION__');
 define('AUTH_SALT'      , 'BeeFramework<3');
 
 // Puerto y URL del Sistema
-define('PORT'           , '8848');
+define('PORT'           , '80');
 define('URL'            , IS_LOCAL ? 'http://127.0.0.1:' . PORT . '/' : '__URL_EN_PRODUCCION__');
 
 // Las rutas de directorios y archivos = '\'
@@ -38,10 +38,10 @@ define('VIEWS'          , TEMPLATES.'views'.DS);
 
 // URLs absolutas para carga de archivos o assets
 define('ASSETS'         , URL.'assets/');
-define('CSS'            , ASSETS.'css/');
+define('CSS'            , ASSETS.'css/'); // Ejemplo de uso src="... echo CSS; styles.css"
 define('FAVICON'        , ASSETS.'favicon/');
 define('FONTS'          , ASSETS.'fonts/');
-define('IMAGES'         , ASSETS.'images/'); // Ejemplo de uso IMAGES.'nombreImagen.png';
+define('IMAGES'         , ASSETS.'images/'); // Ejemplo de uso echo IMAGES; bee_logo.png";
 define('JS'             , ASSETS.'js/');
 define('PLUGINS'        , ASSETS.'plugins/');
 define('UPLOADS'        , ASSETS.'uploads/'); //TODO: Revisar si no da problemas al subir archivos
