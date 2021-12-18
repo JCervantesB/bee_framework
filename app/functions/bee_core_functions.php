@@ -1,0 +1,1 @@
+<!-- Este archivo contiene todas las funciones requeridas en este framework -->

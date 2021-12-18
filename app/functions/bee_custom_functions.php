@@ -1,0 +1,1 @@
+<!-- Este archivo contiene todas las funciones necesarias para el proyecto que se este contruyendo con Bee framework -->
