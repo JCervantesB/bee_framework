@@ -2,7 +2,7 @@
 Nuestro primer parametro sera el Controllador, seguido de un methodo y un parametro.
 
 Ejemplo:
-controllador|metodo|parametro
+    controllador|metodo|parametro
     usuarios/ver/123
     productos/agregar
 
