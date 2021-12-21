@@ -10,9 +10,7 @@ class Bee {
     // La función principal que se ejecuta al instanciar nuestra classe
     function __construct()
     {
-        echo 'Ejecutando el contructor...';
         $this->init();
-
     }
 
     /**
@@ -147,13 +145,11 @@ class Bee {
             $method = str_replace('-', '_', $this->uri[1]); // Convierte un '-' en '_'
             // Existe o no el método dentro de la clase a ejecutar (controlador)
             if(!method_exists($controller, $method)) {
-                echo 'No existe el método'.$current_method;
                 $controller = DEFAULT_ERROR_CONTROLLER.'Controller'; // errorController
                 $current_method = DEFAULT_METHOD; // index
             } else {
                 // Si existe, cargar el método solicitado
                 $current_method = $method;
-                echo 'Si existe el método'.$current_method;
             }
 
             unset($this->uri[1]);
@@ -162,9 +158,24 @@ class Bee {
             $current_method = DEFAULT_METHOD; // index
         }
 
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Ejecutando controlador y método solicitado
+        $controller = new $controller;
+        
+        // Obtener los parametros de la uri
+        $params = array_values(empty($this->uri) ? [] : $this->uri);
 
+        // Llamada al método que solicita el usuario en curso
+        if(empty($params)) {
+            call_user_func([$controller, $current_method]);
+        } else {
+            call_user_func_array([$controller, $current_method], $params);
+        }
 
-        print_r($this->uri);
+        return; // Linea final todo sucede entre esta linea y el comienzo
+
+        //print_r($params);
+        //print_r($this->uri);
         //echo $current_method;
     }
 }

@@ -3,6 +3,6 @@
 class errorController {
     function __construct()
     {
-        echo 'Ejecutando:' .__CLASS__;
+        echo '<h1>Pagina no encontrada</h1>';
     }
 }
