@@ -12,6 +12,7 @@ class Bee {
     {
         echo 'Ejecutando el contructor...';
         $this->init();
+
     }
 
     /**
@@ -25,6 +26,7 @@ class Bee {
         $this->init_load_config();
         $this->init_load_function();
         $this->init_autoload();
+        $this->dispatch();
     }
 
     /**
@@ -84,15 +86,85 @@ class Bee {
      * 
      * @return void
      */
-
     private function init_autoload(){
         require_once CLASSES.'Db.php';
         require_once CLASSES.'Model.php';
         require_once CLASSES.'Controller.php';   
+        require_once CONTROLLERS.DEFAULT_CONTROLLER.'Controller.php';
+        require_once CONTROLLERS.DEFAULT_ERROR_CONTROLLER.'Controller.php';
+        require_once CONTROLLERS.'usersController.php';
         
         return;
     }
 
+    /**
+     * Método para filtrar y descomponener los elementos de nuestra url y uri
+     * 
+     * @return void
+     */
+    private function filter_url() {
+        if(isset($_GET['uri'])) {
+            $this->uri = $_GET['uri'];
+            $this->uri = rtrim($this->uri, '/');
+            $this->url = filter_var($this->uri, FILTER_SANITIZE_URL);
+            $this->uri = explode('/', strtolower($this->uri));
+            return $this->uri;
+        }
+    }
+
+    /**
+     * Método para ejecutar y cargar de forma automatica los controladores solicitados por el usuario
+     * Su método y pasar parametros a el
+     * 
+     * @return void
+     */
+    private function dispatch() {
+        // Filtrar la URL y separar la URI
+        $this->filter_url();
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Necesitamos saber si se está pasando el nombre de un controlador en nuestro URIm 
+        // $this->uri[0] es el controlador en cuestión
+        if(isset($this->uri[0])) {
+            $current_controller = $this->uri[0]; // usuariosController.php
+            // Borrar el index del array para obtener solamente los parametros.
+            unset($this->uri[0]);
+        } else {
+            // Si no existe, cargar el controlador por defecto
+            $current_controller = DEFAULT_CONTROLLER; // homeController.php
+        }
+
+        // Ejecución del controlador solicitado
+        // Verificamos si existe una clase con el controlador solicitado
+        $controller = $current_controller.'Controller'; // homeController
+        if(!class_exists($controller)) {
+            // Si no existe, cargar el controlador por defecto
+            $controller = DEFAULT_ERROR_CONTROLLER.'Controller'; // errorController
+        }
+        /////////////////////////////////////////////////////////////////////////////////////////
+        //Ejecución del método solicitado
+        if(isset($this->uri[1])) {
+            $method = str_replace('-', '_', $this->uri[1]); // Convierte un '-' en '_'
+            // Existe o no el método dentro de la clase a ejecutar (controlador)
+            if(!method_exists($controller, $method)) {
+                echo 'No existe el método'.$current_method;
+                $controller = DEFAULT_ERROR_CONTROLLER.'Controller'; // errorController
+                $current_method = DEFAULT_METHOD; // index
+            } else {
+                // Si existe, cargar el método solicitado
+                $current_method = $method;
+                echo 'Si existe el método'.$current_method;
+            }
+
+            unset($this->uri[1]);
+
+        } else {
+            $current_method = DEFAULT_METHOD; // index
+        }
 
 
+
+        print_r($this->uri);
+        //echo $current_method;
+    }
 }
