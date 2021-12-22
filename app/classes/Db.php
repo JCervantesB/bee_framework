@@ -8,23 +8,18 @@ class Db {
     private $user;
     private $pass;
     private $charset;
-    private $options;
 
-    // Constructor para clase
-
+    /**
+     * Constructor de la clase
+     */
     public function __construct() {
         $this->engine  = IS_LOCAL ? LDB_ENGINE : DB_ENGINE;
+        $this->host    = IS_LOCAL ? LDB_HOST : DB_HOST;
         $this->name    = IS_LOCAL ? LDB_NAME : DB_NAME;
         $this->user    = IS_LOCAL ? LDB_USER : DB_USER;
         $this->pass    = IS_LOCAL ? LDB_PASS : DB_PASS;
         $this->charset = IS_LOCAL ? LDB_CHARSET : DB_CHARSET;
-        $this->host    = IS_LOCAL ? LDB_HOST : DB_HOST;
-        $this->options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
-            return $this;
+        return $this;
     }
 
     /**
@@ -35,17 +30,69 @@ class Db {
 
     private function connect() {
         try {
-            $this->link = new PDO($this->engine.':host='.$this->host.';dbname='.$this->name.';charset='.$this->charset, $this->user, $this->pass, $this->options);
+            $this->link = new PDO($this->engine.':host='.$this->host.';dbname='.$this->name.';charset='.$this->charset, $this->user, $this->pass);
             return $this->link;
         } catch (PDOException $e) {
-            die(sprintf('No  hay conexión a la base de datos, hubo un error: %s', $e->getMessage()));
+            die('No hay conexión a la base de datos, hubo un error: %s'.$e->getMessage());
         }
     }
 
+    /**
+     * Método para hacer un query a la base de datos
+     * 
+     * @param string $sql
+     * @param array $params
+     * @return void
+     */
     public static function query($sql, $params = []) {
         $db = new self();
-        $link = $db->connect();
-        $link->beginTransaction();
+        $link = $db->connect(); // Nuestra conexion a la db
+        $link->beginTransaction(); // Iniciamos una transaccion, si falla hacemos un rollback
         $query = $link->prepare($sql);
+
+        // Manejando errores en el query o peticion
+        if(!$query->execute($params)) {
+
+            $link->rollBack(); // Si hay un error hacemos un rollback
+            $error = $query->errorInfo();
+            // index 0 es el tipo de error
+            // index 1 es el codigo de error
+            // index 2 es el mensaje de error
+            throw new Exception($error[2]);
+        }
+
+        // SELECT / INSERT / UPDATE / DELETE /ALTER TABLE
+        // Manejando el tipo de query
+        // SELEC * FROM users;
+        if(strpos($sql, 'SELECT') !== false) {
+
+            return $query->rowCount() > 0 ? $query->fetchAll() : false; // No hay resultados
+
+        } elseif(strpos($sql, 'INSERT') !== false) {
+
+            $id = $link->lastInsertId(); // Almacenamos el ultimo Id con la variable $id
+            $link->commit(); // Guardamos los cambios con commit
+            return $id;
+
+        } elseif(strpos($sql, 'UPDATE') !== false) {
+
+            $link->commit();
+            return true;
+
+        } elseif(strpos($sql, 'DELETE') !== false) {
+
+            if($query->rowCount() > 0) {
+                $link->commit();
+                return true;
+            }
+
+            $link->rollBack();
+            return false; // Nada ha sido borrado
+
+        } else {
+            // ALTER TABLE / DROP TABLE ...
+            $link->commit();
+            return true;
+        }
     }
 }

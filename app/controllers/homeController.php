@@ -15,4 +15,17 @@ class homeController {
 
         View::render('bee', $data);
     }
+
+    function test()
+    {
+        Flasher::new('Hola mundo soy  una notificación');
+        Flasher::new('Hola mundo soy  una notificación', 'danger');
+        Flasher::new('Hola mundo soy  una notificación', 'warning');
+        View::render('test');
+    }
+
+    function flash()
+    {
+        View::render('flash');
+    }
 }

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Bee Framework version 1.0.0
+ * Desarrollado por: JCervantes en el curso Mini Framework PHP Joystick.com
+ * Utilizando Github Copilot
+ */
 
 class Bee {
 
@@ -85,13 +90,14 @@ class Bee {
      * @return void
      */
     private function init_autoload(){
-        require_once CLASSES.'Db.php';
-        require_once CLASSES.'Model.php';
-        require_once CLASSES.'View.php';
-        require_once CLASSES.'Controller.php';   
-        require_once CONTROLLERS.DEFAULT_CONTROLLER.'Controller.php';
-        require_once CONTROLLERS.DEFAULT_ERROR_CONTROLLER.'Controller.php';
-        
+        require_once CLASSES.'Autoloader.php'; // Cargando el autoloader
+        Autoloader::init();
+        // require_once CLASSES.'Db.php';
+        // require_once CLASSES.'Model.php';
+        // require_once CLASSES.'View.php';
+        // require_once CLASSES.'Controller.php';   
+        //require_once CONTROLLERS.DEFAULT_CONTROLLER.'Controller.php';
+        //require_once CONTROLLERS.DEFAULT_ERROR_CONTROLLER.'Controller.php';
         return;
     }
 

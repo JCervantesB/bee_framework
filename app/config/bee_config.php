@@ -36,6 +36,10 @@ define('INCLUDES'       , TEMPLATES.'includes'.DS);
 define('MODULES'        , TEMPLATES.'modules'.DS);
 define('VIEWS'          , TEMPLATES.'views'.DS);
 
+// Rutas de recursos y assets absolutos
+define('IMAGES_PATH', ROOT.'assets'.DS.'images'.DS);
+
+
 // URLs absolutas para carga de archivos o assets
 define('ASSETS'         , URL.'assets/');
 define('CSS'            , ASSETS.'css/'); // Ejemplo de uso src="... echo CSS; styles.css"
