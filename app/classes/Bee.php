@@ -33,7 +33,7 @@ class Bee {
      * @return void
      */
     private function init_session() {
-        if(!isset($_SESSION)) {
+        if(session_status() == PHP_SESSION_NONE) {
             session_start();
         }
     }
@@ -87,10 +87,10 @@ class Bee {
     private function init_autoload(){
         require_once CLASSES.'Db.php';
         require_once CLASSES.'Model.php';
+        require_once CLASSES.'View.php';
         require_once CLASSES.'Controller.php';   
         require_once CONTROLLERS.DEFAULT_CONTROLLER.'Controller.php';
         require_once CONTROLLERS.DEFAULT_ERROR_CONTROLLER.'Controller.php';
-        require_once CONTROLLERS.'usersController.php';
         
         return;
     }
@@ -138,6 +138,7 @@ class Bee {
         if(!class_exists($controller)) {
             // Si no existe, cargar el controlador por defecto
             $controller = DEFAULT_ERROR_CONTROLLER.'Controller'; // errorController
+            $current_controller = DEFAULT_ERROR_CONTROLLER; // Llamar la vista Error por defecto
         }
         /////////////////////////////////////////////////////////////////////////////////////////
         //Ejecución del método solicitado
@@ -147,6 +148,7 @@ class Bee {
             if(!method_exists($controller, $method)) {
                 $controller = DEFAULT_ERROR_CONTROLLER.'Controller'; // errorController
                 $current_method = DEFAULT_METHOD; // index
+                $current_controller = DEFAULT_ERROR_CONTROLLER; // Llamar la vista Error por defecto
             } else {
                 // Si existe, cargar el método solicitado
                 $current_method = $method;
@@ -157,6 +159,10 @@ class Bee {
         } else {
             $current_method = DEFAULT_METHOD; // index
         }
+        /////////////////////////////////////////////////////////////////////////////////////////
+        // Creando constantes para utilizar mas adelante
+        define('CONTROLLER', $current_controller);
+        define('METHOD'    , $current_method);
 
         /////////////////////////////////////////////////////////////////////////////////////////
         // Ejecutando controlador y método solicitado
@@ -174,8 +180,15 @@ class Bee {
 
         return; // Linea final todo sucede entre esta linea y el comienzo
 
-        //print_r($params);
-        //print_r($this->uri);
-        //echo $current_method;
+    }
+
+    /**
+     * Método correr nuestro framework
+     * 
+     * @return void
+     */
+    public static function fly() {
+        $bee = new self();
+        return;
     }
 }

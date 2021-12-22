@@ -3,6 +3,16 @@
 class homeController {
     function __construct()
     {
-        echo 'Ejecutando:' .__CLASS__;
+        
+    }
+
+    function index()
+    {
+        $data = 
+        [
+            'title' => 'Bee Framework',
+        ];
+
+        View::render('bee', $data);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 // Este archivo contiene todas las funciones requeridas en este framework
 
-// Primera funcion de prueba Core
-function en_core() {
-    return 'ESTOY DENTRO DE CORE_FUNCTIONS';
+function to_object($array) {
+    // Convertir un array en un objeto
+    return json_decode(json_encode($array));
 }
