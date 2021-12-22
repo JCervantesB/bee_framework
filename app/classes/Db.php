@@ -27,7 +27,6 @@ class Db {
    *
    * return mixed
    */
-
     private function connect() {
         try {
             $this->link = new PDO($this->engine.':host='.$this->host.';dbname='.$this->name.';charset='.$this->charset, $this->user, $this->pass);
@@ -51,6 +50,10 @@ class Db {
         $query = $link->prepare($sql);
 
         // Manejando errores en el query o peticion
+        // Qery usando placeholders
+            // SELECT * FROM usuarios WHERE id=? AND nombre=?;
+            // if(!$query->execute(['id' => 123, 'name' => 'Juan'])) {...
+            // SELECT * FROM usuarios WHERE id=:cualrquier AND name=:nombre;
         if(!$query->execute($params)) {
 
             $link->rollBack(); // Si hay un error hacemos un rollback

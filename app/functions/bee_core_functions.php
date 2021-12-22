@@ -15,8 +15,6 @@ function get_sitename() {
     return 'Bee Framework';
 }
 
-
-
 /**
  * Devuelve el email general del sistema
  *
