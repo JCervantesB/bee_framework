@@ -1,5 +1,7 @@
-![Bee Framework](https://raw.githubusercontent.com/Moxtrip69/Bee-Framework/master/assets/images/bee_logo.png)
+![Bee Framework](https://github.com/JCervantesB/bee_framework/blob/master/assets/images/bee_logo_white.png)
 # Bee-Framework
+-- Esta version ha sido codificada por **JCervantes** en el curso "Crea tu propio framework profesional mvc con php poo mysql"
+
 Mini framework desarrollado por el equipo de Joystick SA de CV en México.
 Puedes hacer uso de el para tus proyectos personales o comerciales, es ligero y fácil de implementar para proyectos tanto pequeños como aquellos que requieren escalabilidad y visión a futuro.
 
