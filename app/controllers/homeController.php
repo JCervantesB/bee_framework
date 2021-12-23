@@ -1,6 +1,6 @@
 <?php
 
-class homeController {
+class homeController extends Controller {
     function __construct()
     {
         
@@ -8,9 +8,33 @@ class homeController {
 
     function index()
     {
+        // Insertar un nuevo usuario
+        try {
+            // Crear un usuario
+            $user = new usuarioModel();
+            $user->name = 'Juanito Ortega';
+            $user->username = 'juanito123';
+            $user->email = 'juanito@correo.com';
+            $user->create_at = now();
+            // $id = $user->add();
+            // echo $id;
+
+            // Actualizar un usuario existente
+            $user->id = 5;
+            $user->name = 'Juanito Ortega Actualizado2';
+            $user->username = 'Test';
+            $user->email = 'test@correo.com';
+            print_r($user->update());
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
+        die;
         $data = 
         [
             'title' => 'Bee Framework',
+            'bg' => 'dark'
         ];
 
         View::render('bee', $data);
