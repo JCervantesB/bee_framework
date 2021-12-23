@@ -1,0 +1,20 @@
+// Cross-Site Request Forgery (CSRF)
+
+// SIN CSRF// SITIO 1
+WWW.MIBANCO.COM
+Sesión de usuario iniciada de forma seguria, estás transfiriendo dinero a tus proveedores usando un formulario con 2 campos, número de cuenta y cantidad $$$
+
+// SITIO MALICIOSO 2
+WWWW.ATTACKER.COM
+Este sitio simula la peticion del fomulario de wwww.mibanco.com cuando tu entras en el, mandando 2 datos, número de cuenta (del ATTACKER) y una cantidad de $1,000,000.
+No hay forma de legitimar la petición por lo que www.mibanco.com la toma como válida y tu dinero acaba de ser transferido sin tu autorización.
+
+// CON CSRF
+//SITIO 1
+WWW.MIBANCO.COM
+Sesión de usuario iniciada de forma segura, estás trasnfiriendo dinero a tus proveedores usando un formulario con 3 campos, número de cuenta, cantidad $$$ y un token generado
+de forma dinamica que es diferente para cada usuario y cada formulario, es casi imposible de adivinar.
+
+// SITIO MALICIOSO 2
+WWW.ATTACKER.COMEste sitio simula la petición de formulario de www.mibanco.com cuando tu entras en el, mandando solamente 2 datos, número de cuenta (del ATTACKER) y una cantidad de $1,000,000.
+Pero como no incluye la petición el mismo token que te fue generado a ti, no dejará que está petición siga de forma correcta, www.mibanco.com la toma como no válida y tu dinero sigue seguro en tu cuneta bancaria.

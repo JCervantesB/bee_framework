@@ -29,6 +29,7 @@ class Bee {
         $this->init_load_config();
         $this->init_load_function();
         $this->init_autoload();
+        $this->init_csrf();
         $this->dispatch();
     }
 
@@ -99,6 +100,15 @@ class Bee {
         //require_once CONTROLLERS.DEFAULT_CONTROLLER.'Controller.php';
         //require_once CONTROLLERS.DEFAULT_ERROR_CONTROLLER.'Controller.php';
         return;
+    }
+
+    /**
+     * Método para crear un nuevo token de la sesion del usuario
+     * 
+     * @return void
+     */
+    private function init_csrf() {
+        $csrf = new Csrf();
     }
 
     /**

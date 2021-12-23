@@ -11,6 +11,7 @@ class errorController {
         $data = 
         [
             'title' => 'Pagina no encontrada',
+            'bg' => 'dark'
         ];
         View::render('404', $data);
     }

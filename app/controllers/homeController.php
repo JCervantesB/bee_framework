@@ -8,29 +8,6 @@ class homeController extends Controller {
 
     function index()
     {
-        // Insertar un nuevo usuario
-        try {
-            // Crear un usuario
-            $user = new usuarioModel();
-            $user->name = 'Juanito Ortega';
-            $user->username = 'juanito123';
-            $user->email = 'juanito@correo.com';
-            $user->create_at = now();
-            // $id = $user->add();
-            // echo $id;
-
-            // Actualizar un usuario existente
-            $user->id = 5;
-            $user->name = 'Juanito Ortega Actualizado2';
-            $user->username = 'Test';
-            $user->email = 'test@correo.com';
-            print_r($user->update());
-
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-
-        die;
         $data = 
         [
             'title' => 'Bee Framework',
@@ -42,9 +19,11 @@ class homeController extends Controller {
 
     function test()
     {
+        // Generando notificaciones
         Flasher::new('Hola mundo soy  una notificación');
-
         echo '<pre>';
+
+        // Realizando consultas a la base de datos
         try {
             // SELECT
             $sql = 'SELECT * FROM test WHERE id=:id AND name=:name';
@@ -83,6 +62,40 @@ class homeController extends Controller {
         } catch (Exception $e) {
             echo 'Hubo un error: '.$e->getMessage();
         }
+
+
+        // // Insertar un nuevo usuario
+        try {
+            // Crear un usuario
+            $user = new usuarioModel();
+            $user->name = 'Juanito Ortega';
+            $user->username = 'juanito123';
+            $user->email = 'juanito@correo.com';
+            $user->create_at = now();
+            // $id = $user->add();
+            // echo $id;
+
+            // Actualizar un usuario existente
+            $user->id = 5;
+            $user->name = 'Juanito Ortega Actualizado2';
+            $user->username = 'Test';
+            $user->email = 'test@correo.com';
+            //print_r($user->update());
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
+        // Probando token de la session con CSRF
+        print_r($_SESSION);
+        $token_peticion = '321ab2064352d3a09afd2672395e2c0e56e23b71bd4cf7c5a45c35761de49583';
+        if(Csrf::validate($token_peticion)) {
+            echo '<h1>Token validado</h1>';
+        } else {
+            echo '<h1>Token no validado</h1>';
+        }
+
+        die;
 
 
         echo '</pre>';
